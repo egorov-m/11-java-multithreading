@@ -1,21 +1,21 @@
 package org.example;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class Lucky {
-    static AtomicInteger atX = new AtomicInteger(0);
-    static AtomicInteger count = new AtomicInteger(0);
+    static int x;
+    static int count;
 
     static class LuckyThread extends Thread {
         @Override
         public void run() {
-            while (atX.get() < 999999) {
-                int x = atX.incrementAndGet();
-                 if ((x % 10) + (x / 10) % 10 + (x / 100) % 10 == (x / 1000)
-                        % 10 + (x / 10000) % 10 + (x / 100000) % 10) {
-                    System.out.println(x);
-                    System.out.println(Thread.currentThread().getName());
-                    count.incrementAndGet();
+            while (x < 999999) {
+                synchronized (Object.class) {
+                    x++;
+                    if ((x % 10) + (x / 10) % 10 + (x / 100) % 10 == (x / 1000)
+                            % 10 + (x / 10000) % 10 + (x / 100000) % 10) {
+                        System.out.println(x);
+                        System.out.println(Thread.currentThread().getName());
+                        count++;
+                    }
                 }
             }
         }
